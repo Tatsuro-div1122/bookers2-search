@@ -23,6 +23,10 @@
 					</td>
 					<td><%= link_to @post_book.title, @book %></td>
 					<td><%= @post_book.body %></td>
+					<td id="f">
+						  <%= render 'favorites/favorite', book: @post_book %>
+					</td>
+					<td><p>コメント数：<%= @post_book.book_comments.count %></p></td>
 					<% if @post_book.user_id == current_user.id %>
 					<td>
 						  <%= link_to "Edit",edit_book_path(@post_book), class: "btn-sm btn-success edit_book_#{@post_book.id}" %>
@@ -31,7 +35,29 @@
 					<% end %>
 				</tr>
 			</table>
-
+			<%= form_for([@post_book, @book_comment]) do |f| %>
+      	<% if @book_comment.errors.any? %>
+      	  <%= @book_comment.errors.full_message.each do |message| %>
+      	  <%= message %>
+      	  <% end %>
+      	<% end %>
+			  <%= f.text_area :comment, class: "form-control", placeholder: "コメントをここに入力"%>
+			  <%= f.submit "Post comment", class: "btn btn-sm btn-default" %>
+			<% end %>
+			<h4>Book comments</h4>
+      <table class="table">
+      	<tr>
+      	<% @post_book.book_comments.each do |book_comment| %>
+      	  <td><%= attachment_image_tag book_comment.user, :profile_image, :fill, 50, 50, fallback: 'no-image-mini.jpg'%></td>
+      	  <td><%= book_comment.user.name %></td>
+      	  <td><%= book_comment.created_at.strftime('%Y/%m/%d') %></td>
+      	  <td><%= book_comment.comment %></td>
+      	  <td><% if book_comment.user_id == current_user.id %>
+      	  	    <%= link_to "Delete", book_book_comment_path(book_comment.id), method: :delete %>
+      	  	  <% end %>
+      	  </td>
+      	<% end %>
+      </tr>
 	</div>
 </div>
 
