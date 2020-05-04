@@ -35,12 +35,19 @@
 					<% end %>
 				</tr>
 			</table>
+      <% if @book_comment.errors.any? %>
+          <div id="error_explanation">
+            <h3><%= pluralize(@book_comment.errors.count, "error") %> prohibited this obj from being saved:</h3>
+
+            <ul>
+            <% @book_comment.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+            </ul>
+          </div>
+      <% end %>
+
 			<%= form_for([@post_book, @book_comment]) do |f| %>
-      	<% if @book_comment.errors.any? %>
-      	  <%= @book_comment.errors.full_message.each do |message| %>
-      	  <%= message %>
-      	  <% end %>
-      	<% end %>
 			  <%= f.text_area :comment, class: "form-control", placeholder: "コメントをここに入力"%>
 			  <%= f.submit "Post comment", class: "btn btn-sm btn-default" %>
 			<% end %>
