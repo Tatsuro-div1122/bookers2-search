@@ -14,7 +14,7 @@ class BookCommentsController < ApplicationController
   end
 
   def destroy
-    baria_book_comment
+    # baria_book_comment
 
     book = Book.find(params[:book_id])
     comment = BookComment.find(params[:id])
