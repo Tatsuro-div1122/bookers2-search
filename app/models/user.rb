@@ -31,6 +31,26 @@ class User < ApplicationRecord
     following_users.include?(user)
   end
 
+  def User.search(search, user_or_book, how_search)
+      return User.all if search !=""
+
+      if how_search =="1"
+        User.where(['name LIKE ?', "#{search}"]).exists? ? User.where(['name LIKE ?', "#{search}"]) : User.all
+
+      elsif how_search =="2"
+        User.where(['name LIKE ?', "%#{search}"]).exists? ? User.where(['name LIKE ?', "%#{search}"]) : User.all
+
+      elsif how_search =="3"
+        User.where(['name LIKE ?', "#{search}%"]).exists? ? User.where(['name LIKE ?', "%#{search}"]) : User.all
+
+      elsif how_search =="4"
+        User.where(['name LIKE ?', "%#{search}%"]).exists? ? User.where(['name LIKE ?', "%#{search}"]) : User.all
+
+      else
+        User.all
+      end
+  end
+
   attachment :profile_image, destroy: false
 
   #バリデーションは該当するモデルに設定する。エラーにする条件を設定できる。
